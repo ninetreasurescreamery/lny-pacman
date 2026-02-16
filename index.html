@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Pacman: Nine Treasures Creamery x OpenAI</title>
+<title>Pacman: Nine Treasures Creamery x AI-Pilled Asians in Tech</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,11 +67,13 @@ const STATE = {
   LOGO: 'LOGO',
   SPLASH: 'SPLASH',
   EXPLAINER: 'EXPLAINER',
+  LEVEL_SPLASH: 'LEVEL_SPLASH',
   READY: 'READY',
   PLAYING: 'PLAYING',
   PACMAN_DEATH: 'PACMAN_DEATH',
   LEVEL_COMPLETE: 'LEVEL_COMPLETE',
   GAME_OVER: 'GAME_OVER',
+  SCORE_SCREEN: 'SCORE_SCREEN',
   WIN: 'WIN',
   CREDITS: 'CREDITS',
   END: 'END',
@@ -122,28 +124,123 @@ const T = {
 };
 
 // ==========================================
-// LEVEL 1 MAZE: Black Sesame Cookies & Cream
+// LEVEL CONFIGURATIONS
 // ==========================================
-// Classic Pacman-inspired layout
 // 1=wall, 2=dot, 3=power pill, 0=empty, 4=ghost house, 5=ghost door, 6=tunnel
-const MAZE_STRINGS = [
-  '111111111111111111111',
-  '132222222222222222231',
-  '121211122222221121121',
-  '122222222222222222221',
-  '121222211151112222121',
-  '122222210444102222221',
-  '600000010444100000006',
-  '122222210444102222221',
-  '121222211111112222121',
-  '122222222222222222221',
-  '121211122222221121121',
-  '132222222222222222231',
-  '121222211111112222121',
-  '122222222222222222221',
-  '121222222222222222121',
-  '122222222222222222221',
-  '111111111111111111111',
+// All mazes: 21x17, ghost house rows 5-8 cols 9-12, door (10,4), tunnels row 6 cols 0/20, Pacman spawn (10,13)
+const LEVEL_CONFIGS = [
+  {
+    name: 'Malted Toasted Rice',
+    image: 'level1.png',
+    scoopColor: '#D4A574',
+    wallColor: '#1E90FF',
+    speedMultiplier: 0.50,
+    frightenedDuration: 420,
+    ghostDotLimits: [0, 0, 20, 40],
+    maze: [
+      '111111111111111111111',
+      '132222222222222222231',
+      '122222222222222222221',
+      '122222222222222222221',
+      '122222211151112222221',
+      '122222210444102222221',
+      '600000010444100000006',
+      '122222210444102222221',
+      '122222211111112222221',
+      '122222222222222222221',
+      '122222222222222222221',
+      '132222222222222222231',
+      '122222222222222222221',
+      '122222222222222222221',
+      '122222222222222222221',
+      '122222222222222222221',
+      '111111111111111111111',
+    ],
+  },
+  {
+    name: 'Black Sesame Cookies & Cream',
+    image: 'level2.png',
+    scoopColor: '#333333',
+    wallColor: '#8B5CF6',
+    speedMultiplier: 0.60,
+    frightenedDuration: 360,
+    ghostDotLimits: [0, 0, 25, 50],
+    maze: [
+      '111111111111111111111',
+      '132222222222222222231',
+      '121211122222221121121',
+      '122222222222222222221',
+      '121222211151112222121',
+      '122222210444102222221',
+      '600000010444100000006',
+      '122222210444102222221',
+      '121222211111112222121',
+      '122222222222222222221',
+      '121211122222221121121',
+      '132222222222222222231',
+      '121222211111112222121',
+      '122222222222222222221',
+      '121222222222222222121',
+      '122222222222222222221',
+      '111111111111111111111',
+    ],
+  },
+  {
+    name: 'Miso Maple Ginger',
+    image: 'level3.png',
+    scoopColor: '#C8A050',
+    wallColor: '#E67E22',
+    speedMultiplier: 0.70,
+    frightenedDuration: 300,
+    ghostDotLimits: [0, 0, 15, 35],
+    maze: [
+      '111111111111111111111',
+      '132221222222222122231',
+      '121221222222222221121',
+      '122222212222122222221',
+      '121122211151112211121',
+      '122222210444102222221',
+      '600000010444100000006',
+      '122222210444102222221',
+      '121122211111112211121',
+      '122222212222122222221',
+      '121221222222222221121',
+      '132221222222222122231',
+      '121222211111112222121',
+      '122222222222222222221',
+      '121122212222122211121',
+      '122222222222222222221',
+      '111111111111111111111',
+    ],
+  },
+  {
+    name: 'Kaya Toast',
+    image: 'level4.png',
+    scoopColor: '#7CB342',
+    wallColor: '#27AE60',
+    speedMultiplier: 0.80,
+    frightenedDuration: 240,
+    ghostDotLimits: [0, 0, 10, 25],
+    maze: [
+      '111111111111111111111',
+      '132121222222222121231',
+      '121221211221121221121',
+      '122122212222122212221',
+      '121222211151112222121',
+      '122122210444102212221',
+      '600000010444100000006',
+      '122122210444102212221',
+      '121222211111112222121',
+      '122122212222122212221',
+      '121221211221121221121',
+      '132121222222222121231',
+      '121221211111121221121',
+      '122122222222222212221',
+      '121221212222121221121',
+      '122222222222222222221',
+      '111111111111111111111',
+    ],
+  },
 ];
 
 function parseMaze(strings) {
@@ -155,12 +252,34 @@ function parseMaze(strings) {
 // ==========================================
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = CANVAS_W;
-canvas.height = CANVAS_H;
+
+// High-DPI support for sharp text
+const DPR = Math.min(window.devicePixelRatio || 1, 3);
+canvas.width = CANVAS_W * DPR;
+canvas.height = CANVAS_H * DPR;
+ctx.scale(DPR, DPR);
 
 // Load logo image
 const logoImg = new Image();
 logoImg.src = 'kim2.png';
+
+// Preload level splash images
+const levelImages = LEVEL_CONFIGS.map(cfg => {
+  const img = new Image();
+  img.src = cfg.image;
+  return img;
+});
+
+// Preload sponsor logos
+const SPONSORS = [
+  'openai', 'linkedin', 'amazon', 'microsoft', 'yahoo',
+  'squarespace', 'mastercard', 'lyft', 'peloton', 'uipath', 'taatf',
+];
+const sponsorImages = SPONSORS.map(name => {
+  const img = new Image();
+  img.src = 'companies/' + name + '.png';
+  return { name, img };
+});
 
 function resizeCanvas() {
   const scaleX = window.innerWidth / CANVAS_W;
@@ -486,7 +605,7 @@ const Sprites = {
 // ==========================================
 // MAZE RENDERER
 // ==========================================
-function drawMaze(ctx, maze, frame) {
+function drawMaze(ctx, maze, frame, wallColor) {
   const offsetY = HUD_TOP;
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
@@ -495,7 +614,7 @@ function drawMaze(ctx, maze, frame) {
       const y = r * TILE + offsetY;
       switch(tile) {
         case T.WALL:
-          drawWallTile(ctx, maze, r, c, x, y);
+          drawWallTile(ctx, maze, r, c, x, y, wallColor);
           break;
         case T.DOT:
           ctx.fillStyle = COLORS.dot;
@@ -515,8 +634,8 @@ function drawMaze(ctx, maze, frame) {
   }
 }
 
-function drawWallTile(ctx, maze, r, c, x, y) {
-  ctx.fillStyle = COLORS.wall;
+function drawWallTile(ctx, maze, r, c, x, y, wallColor) {
+  ctx.fillStyle = wallColor || COLORS.wall;
   // Simple but effective wall drawing using rounded rects
   const m = 1; // margin
   const isWall = (rr, cc) => {
@@ -530,7 +649,7 @@ function drawWallTile(ctx, maze, r, c, x, y) {
   const right = isWall(r, c+1);
 
   // Draw wall segments that connect to neighbors
-  ctx.strokeStyle = COLORS.wall;
+  ctx.strokeStyle = wallColor || COLORS.wall;
   ctx.lineWidth = 2;
 
   const cx = x + TILE/2;
@@ -717,6 +836,7 @@ class Ghost {
     this.animFrame = 0;
     this.target = { x: 0, y: 0 };
     this.leftHouse = false;
+    this.recentTiles = [];
   }
   getChaseTarget(pacman, blinkyGhost) {
     switch(this.name) {
@@ -839,59 +959,71 @@ class Ghost {
   chooseBestDirection(maze) {
     const opposite = OPPOSITE[this.direction];
     const dirs = [DIR.UP, DIR.LEFT, DIR.DOWN, DIR.RIGHT];
-    let bestDist = Infinity;
-    let bestDir = DIR.NONE;
 
+    // Gather all valid directions
+    const validDirs = [];
     for (const dir of dirs) {
       if (dir === opposite) continue;
       const vec = DIR_VEC[dir];
       let nx = this.tileX + vec.x;
       let ny = this.tileY + vec.y;
-
-      // Tunnel
       if (nx < 0) nx = COLS - 1;
       if (nx >= COLS) nx = 0;
       if (ny < 0 || ny >= ROWS) continue;
-
       const tile = maze[ny][nx];
       if (tile === T.WALL) continue;
       if (tile === T.GHOST_DOOR && this.mode !== GHOST_MODE.EATEN) continue;
+      validDirs.push({ dir, nx, ny });
+    }
 
-      if (this.mode === GHOST_MODE.FRIGHTENED) {
-        // Random direction when frightened
-        if (Math.random() < 0.25) return dir;
-        continue;
+    if (validDirs.length === 0) return DIR.NONE;
+
+    // Frightened: fully random
+    if (this.mode === GHOST_MODE.FRIGHTENED) {
+      return validDirs[Math.floor(Math.random() * validDirs.length)].dir;
+    }
+
+    // Loop detection: track recent tiles and force random if looping
+    if (!this.recentTiles) this.recentTiles = [];
+    const posKey = this.tileX + ',' + this.tileY;
+    this.recentTiles.push(posKey);
+    if (this.recentTiles.length > 16) this.recentTiles.shift();
+
+    // Count how many times we've been at this tile recently
+    const visitCount = this.recentTiles.filter(p => p === posKey).length;
+    const isLooping = visitCount >= 3;
+
+    // If looping or random jitter (25% chance), pick a random valid direction
+    // Prefer directions we haven't visited recently
+    if (isLooping || (validDirs.length > 1 && Math.random() < 0.25)) {
+      // Try to pick an unvisited direction first
+      const unvisited = validDirs.filter(d => {
+        const key = d.nx + ',' + d.ny;
+        return !this.recentTiles.includes(key);
+      });
+      if (unvisited.length > 0) {
+        return unvisited[Math.floor(Math.random() * unvisited.length)].dir;
       }
+      // Fallback: random from all valid
+      return validDirs[Math.floor(Math.random() * validDirs.length)].dir;
+    }
 
+    // Normal targeting: pick direction closest to target
+    let bestDist = Infinity;
+    let bestDir = validDirs[0].dir;
+    for (const { dir, nx, ny } of validDirs) {
       const dist = (nx - this.target.x)**2 + (ny - this.target.y)**2;
       if (dist < bestDist) {
         bestDist = dist;
         bestDir = dir;
       }
     }
-
-    // Fallback for frightened mode
-    if (bestDir === DIR.NONE) {
-      for (const dir of dirs) {
-        if (dir === opposite) continue;
-        const vec = DIR_VEC[dir];
-        let nx = this.tileX + vec.x;
-        let ny = this.tileY + vec.y;
-        if (nx < 0) nx = COLS - 1;
-        if (nx >= COLS) nx = 0;
-        if (ny < 0 || ny >= ROWS) continue;
-        if (maze[ny][nx] !== T.WALL && (maze[ny][nx] !== T.GHOST_DOOR || this.mode === GHOST_MODE.EATEN)) {
-          return dir;
-        }
-      }
-    }
-
     return bestDir;
   }
-  setFrightened() {
+  setFrightened(duration) {
     if (this.mode === GHOST_MODE.HOUSE || this.mode === GHOST_MODE.LEAVING || this.mode === GHOST_MODE.EATEN) return;
     this.mode = GHOST_MODE.FRIGHTENED;
-    this.frightenedTimer = 360; // 6 seconds
+    this.frightenedTimer = duration || 360;
     this.speed = this.baseSpeed * 0.5;
     // Reverse direction
     this.direction = OPPOSITE[this.direction] || this.direction;
@@ -914,7 +1046,7 @@ class Game {
     this.highScore = parseInt(localStorage.getItem('pacmanNTC_high') || '0');
     this.lives = 3;
     this.level = 1;
-    this.levelName = 'Black Sesame';
+    this.levelName = LEVEL_CONFIGS[0].name;
     this.maze = null;
     this.pacman = new Pacman();
     this.ghosts = [];
@@ -928,6 +1060,8 @@ class Game {
     this.readyTimer = 0;
     this.deathTimer = 0;
     this.levelCompleteTimer = 0;
+    this.levelSplashTimer = 0;
+    this.frightenedDuration = 420;
     this.bonusItem = null;
     this.bonusTimer = 0;
     this.scorePopups = [];
@@ -951,24 +1085,34 @@ class Game {
           this.fadeTo(STATE.EXPLAINER);
           break;
         case STATE.EXPLAINER:
-          // Bottom 60px = skip to credits, rest = play
-          if (y > CANVAS_H - 60) {
+          // Two button zones: play (y < 290) vs skip to credits (y >= 290)
+          if (y >= 290) {
             this.fadeTo(STATE.WIN);
             this.winTweetIndex = 0;
             this.winAnimTimer = 0;
           } else {
-            this.startLevel();
+            this.level = 1;
+            this.levelSplashTimer = 180;
+            this.fadeTo(STATE.LEVEL_SPLASH);
           }
           break;
+        case STATE.LEVEL_SPLASH:
+          // Tap to skip level splash
+          this.startLevel();
+          break;
         case STATE.GAME_OVER:
-          this.state = STATE.SPLASH;
+          this.fadeTo(STATE.SCORE_SCREEN);
           break;
         case STATE.WIN:
+          this.fadeTo(STATE.SCORE_SCREEN);
+          break;
+        case STATE.SCORE_SCREEN:
           this.fadeTo(STATE.CREDITS);
           this.creditsScrollY = CANVAS_H;
           break;
         case STATE.CREDITS:
           // Skip credits
+          this.fireworks = [];
           this.fadeTo(STATE.END);
           break;
         case STATE.END:
@@ -993,7 +1137,9 @@ class Game {
   }
 
   startLevel() {
-    this.maze = parseMaze(MAZE_STRINGS);
+    const config = LEVEL_CONFIGS[this.level - 1];
+    this.levelName = config.name;
+    this.maze = parseMaze(config.maze);
     this.pacman.reset();
     this.dotsTotal = 0;
     this.dotsEaten = 0;
@@ -1022,20 +1168,21 @@ class Game {
 
     // Confab starts outside immediately
     this.ghosts[0].mode = GHOST_MODE.LEAVING;
-    // Others leave after dot counts
-    this.ghosts[1].dotLimit = 0;
+    // Others leave after dot counts (per-level config)
+    this.ghosts[1].dotLimit = config.ghostDotLimits[1];
     this.ghosts[1].mode = GHOST_MODE.HOUSE;
-    this.ghosts[2].dotLimit = 30;
+    this.ghosts[2].dotLimit = config.ghostDotLimits[2];
     this.ghosts[2].mode = GHOST_MODE.HOUSE;
-    this.ghosts[3].dotLimit = 60;
+    this.ghosts[3].dotLimit = config.ghostDotLimits[3];
     this.ghosts[3].mode = GHOST_MODE.HOUSE;
 
-    // Difficulty scaling
-    const speedMultiplier = 0.55; // Level 1 (easy)
+    // Difficulty scaling from level config
     this.ghosts.forEach(g => {
-      g.baseSpeed = 1.5 * speedMultiplier;
+      g.baseSpeed = 1.5 * config.speedMultiplier;
       g.speed = g.baseSpeed;
     });
+
+    this.frightenedDuration = config.frightenedDuration;
 
     this.readyTimer = 120; // 2 seconds
     this.state = STATE.READY;
@@ -1107,10 +1254,22 @@ class Game {
       case STATE.LEVEL_COMPLETE:
         this.levelCompleteTimer++;
         if (this.levelCompleteTimer > 120) {
-          // Only 1 level for now — go to win
-          this.fadeTo(STATE.WIN);
-          this.winTweetIndex = 0;
-          this.winAnimTimer = 0;
+          if (this.level < 4) {
+            this.level++;
+            this.levelSplashTimer = 180;
+            this.fadeTo(STATE.LEVEL_SPLASH);
+          } else {
+            this.fadeTo(STATE.WIN);
+            this.winTweetIndex = 0;
+            this.winAnimTimer = 0;
+          }
+        }
+        break;
+
+      case STATE.LEVEL_SPLASH:
+        this.levelSplashTimer--;
+        if (this.levelSplashTimer <= 0) {
+          this.startLevel();
         }
         break;
 
@@ -1123,7 +1282,8 @@ class Game {
 
       case STATE.CREDITS:
         this.creditsScrollY -= 1;
-        if (this.creditsScrollY < -600) {
+        if (this.creditsScrollY < -1200) {
+          this.fireworks = [];
           this.fadeTo(STATE.END);
         }
         break;
@@ -1178,12 +1338,14 @@ class Game {
       this.score += 50;
       this.dotsEaten++;
       this.ghostsEatenCombo = 0;
-      this.ghosts.forEach(g => g.setFrightened());
+      this.ghosts.forEach(g => g.setFrightened(this.frightenedDuration));
       sound.play('power');
     }
 
     // Bonus item
-    if (!this.bonusItem && (this.dotsEaten === 70 || this.dotsEaten === 170)) {
+    const bonusTrigger1 = Math.floor(this.dotsTotal * 0.4);
+    const bonusTrigger2 = Math.floor(this.dotsTotal * 0.8);
+    if (!this.bonusItem && (this.dotsEaten === bonusTrigger1 || this.dotsEaten === bonusTrigger2)) {
       this.bonusItem = { x: 10, y: 9, timer: 540 }; // 9 seconds
     }
     if (this.bonusItem) {
@@ -1263,6 +1425,7 @@ class Game {
       case STATE.LOGO: this.renderLogo(); break;
       case STATE.SPLASH: this.renderSplash(); break;
       case STATE.EXPLAINER: this.renderExplainer(); break;
+      case STATE.LEVEL_SPLASH: this.renderLevelSplash(); break;
       case STATE.READY:
       case STATE.PLAYING:
       case STATE.PACMAN_DEATH:
@@ -1270,6 +1433,7 @@ class Game {
         this.renderGameplay();
         break;
       case STATE.GAME_OVER: this.renderGameOver(); break;
+      case STATE.SCORE_SCREEN: this.renderScoreScreen(); break;
       case STATE.WIN: this.renderWin(); break;
       case STATE.CREDITS: this.renderCredits(); break;
       case STATE.END: this.renderEnd(); break;
@@ -1310,84 +1474,290 @@ class Game {
   }
 
   renderSplash() {
+    const cx = CANVAS_W / 2;
+    const cy = CANVAS_H / 2;
+    const t = this.frame;
+
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // Title
-    ctx.fillStyle = COLORS.textCyan;
-    ctx.font = '12px "Press Start 2P"';
-    ctx.fillText('PACMAN', CANVAS_W / 2, CANVAS_H / 2 - 100);
+    // === Animated starfield background ===
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    for (let i = 0; i < 40; i++) {
+      const sx = ((i * 137 + t * (0.3 + (i % 3) * 0.2)) % CANVAS_W);
+      const sy = ((i * 97 + t * (0.1 + (i % 4) * 0.05)) % CANVAS_H);
+      const twinkle = 0.3 + 0.7 * Math.abs(Math.sin(t * 0.03 + i));
+      ctx.globalAlpha = twinkle * 0.6;
+      const starSize = (i % 3 === 0) ? 2 : 1;
+      ctx.fillStyle = (i % 5 === 0) ? '#00FFFF' : (i % 7 === 0) ? '#FFD700' : '#FFF';
+      ctx.fillRect(Math.floor(sx), Math.floor(sy), starSize, starSize);
+    }
+    ctx.globalAlpha = 1;
 
-    ctx.fillStyle = COLORS.text;
-    ctx.font = '8px "Press Start 2P"';
-    ctx.fillText('Nine Treasures Creamery', CANVAS_W / 2, CANVAS_H / 2 - 60);
-    ctx.fillText('x OpenAI Edition', CANVAS_W / 2, CANVAS_H / 2 - 40);
+    // === Decorative top border — pixel dot pattern ===
+    for (let i = 0; i < CANVAS_W; i += 8) {
+      const dotAlpha = 0.3 + 0.2 * Math.sin(t * 0.05 + i * 0.1);
+      ctx.globalAlpha = dotAlpha;
+      ctx.fillStyle = '#00FFFF';
+      ctx.fillRect(i + 3, 6, 2, 2);
+      ctx.fillRect(i + 3, CANVAS_H - 8, 2, 2);
+    }
+    ctx.globalAlpha = 1;
 
-    // Draw Pacman sprite
-    Sprites.drawPacman(ctx, CANVAS_W/2, CANVAS_H/2 + 10, 40, DIR.RIGHT, 0.3);
+    // === "PACMAN" title with glow effect ===
+    const glowIntensity = 0.5 + 0.5 * Math.sin(t * 0.04);
+    ctx.save();
+    ctx.shadowColor = '#00FFFF';
+    ctx.shadowBlur = 8 + glowIntensity * 8;
+    ctx.fillStyle = '#00FFFF';
+    ctx.font = '14px "Press Start 2P"';
+    ctx.fillText('PACMAN', cx, 38);
+    ctx.restore();
 
-    // Draw ghosts
+    // === Decorative line under title ===
+    const lineW = 120;
+    const lineGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    lineGrad.addColorStop(0, 'rgba(0,255,255,0)');
+    lineGrad.addColorStop(0.3, 'rgba(0,255,255,0.8)');
+    lineGrad.addColorStop(0.5, 'rgba(255,215,0,1)');
+    lineGrad.addColorStop(0.7, 'rgba(0,255,255,0.8)');
+    lineGrad.addColorStop(1, 'rgba(0,255,255,0)');
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(cx - lineW/2, 52, lineW, 2);
+
+    // === Subtitle: Three lines ===
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '7px "Press Start 2P"';
+    ctx.fillText('Nine Treasures Creamery', cx, 74);
+
+    // "x" in gold
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '9px "Press Start 2P"';
+    ctx.fillText('x', cx, 94);
+
+    // Edition name with slight color shift
+    ctx.fillStyle = '#FF69B4';
+    ctx.font = '6px "Press Start 2P"';
+    ctx.fillText('AI-Pilled Asians', cx, 114);
+    ctx.fillText('in Tech Edition', cx, 130);
+
+    // === Central Pacman — animated chomping + moving dots ===
+    const mouthAnim = 0.15 + 0.35 * Math.abs(Math.sin(t * 0.12));
+    Sprites.drawPacman(ctx, cx, cy + 10, 44, DIR.RIGHT, mouthAnim);
+
+    // Dot trail being eaten by pacman
+    for (let d = 0; d < 5; d++) {
+      const dotX = cx + 34 + d * 14;
+      if (dotX < CANVAS_W - 20) {
+        const eaten = ((t * 0.06) % 6) > d;
+        if (!eaten) {
+          ctx.globalAlpha = 0.8;
+          ctx.fillStyle = '#FFF';
+          ctx.beginPath();
+          ctx.arc(dotX, cy + 10, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // === Ghosts in a row — with subtle bob animation ===
     const ghostColors = [COLORS.ghostPink, COLORS.ghostPeach, COLORS.ghostMint, COLORS.ghostYellow];
     ghostColors.forEach((c, i) => {
-      Sprites.drawGhost(ctx, CANVAS_W/2 - 75 + i * 50, CANVAS_H/2 + 70, 20, c, GHOST_MODE.CHASE, DIR.LEFT, this.frame);
+      const bobY = Math.sin(t * 0.06 + i * 1.2) * 3;
+      const gx = cx - 66 + i * 44;
+      const gy = cy + 62 + bobY;
+      Sprites.drawGhost(ctx, gx, gy, 18, c, GHOST_MODE.CHASE, DIR.LEFT, t + i * 10);
     });
 
-    // Start button
-    const pulse = 1 + 0.05 * Math.sin(this.frame * 0.08);
-    ctx.fillStyle = COLORS.textCyan;
-    ctx.font = `${Math.round(14 * pulse)}px "Press Start 2P"`;
-    ctx.fillText('TAP TO START', CANVAS_W / 2, CANVAS_H / 2 + 140);
+    // === Decorative sparkles flanking the scene ===
+    Sprites.drawSparkle(ctx, 24, cy - 10, 12, t);
+    Sprites.drawSparkle(ctx, CANVAS_W - 24, cy - 10, 12, t + 30);
+    Sprites.drawSparkle(ctx, 40, cy + 50, 8, t + 60);
+    Sprites.drawSparkle(ctx, CANVAS_W - 40, cy + 50, 8, t + 90);
+
+    // === "TAP TO START" with strong pulse ===
+    const pulse = 1 + 0.08 * Math.sin(t * 0.1);
+    const tapAlpha = 0.6 + 0.4 * Math.sin(t * 0.08);
+    ctx.save();
+    ctx.globalAlpha = tapAlpha;
+    ctx.shadowColor = '#00FFFF';
+    ctx.shadowBlur = 6;
+    ctx.fillStyle = '#00FFFF';
+    ctx.font = `${Math.round(10 * pulse)}px "Press Start 2P"`;
+    ctx.fillText('TAP TO START', cx, CANVAS_H - 30);
+    ctx.restore();
+
+    // === Bottom decorative border ===
+    const bottomLineGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    bottomLineGrad.addColorStop(0, 'rgba(255,105,180,0)');
+    bottomLineGrad.addColorStop(0.5, 'rgba(255,105,180,0.6)');
+    bottomLineGrad.addColorStop(1, 'rgba(255,105,180,0)');
+    ctx.fillStyle = bottomLineGrad;
+    ctx.fillRect(cx - lineW/2, CANVAS_H - 14, lineW, 1);
   }
 
   renderExplainer() {
+    const cx = CANVAS_W / 2;
+    const cy = CANVAS_H / 2;
+    const t = this.frame;
+
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    const cy = CANVAS_H / 2;
+    // === Animated starfield background ===
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    for (let i = 0; i < 40; i++) {
+      const sx = ((i * 137 + t * (0.3 + (i % 3) * 0.2)) % CANVAS_W);
+      const sy = ((i * 97 + t * (0.1 + (i % 4) * 0.05)) % CANVAS_H);
+      const twinkle = 0.3 + 0.7 * Math.abs(Math.sin(t * 0.03 + i));
+      ctx.globalAlpha = twinkle * 0.6;
+      const starSize = (i % 3 === 0) ? 2 : 1;
+      ctx.fillStyle = (i % 5 === 0) ? '#00FFFF' : (i % 7 === 0) ? '#FFD700' : '#FFF';
+      ctx.fillRect(Math.floor(sx), Math.floor(sy), starSize, starSize);
+    }
+    ctx.globalAlpha = 1;
 
-    ctx.fillStyle = COLORS.textCyan;
-    ctx.font = '9px "Press Start 2P"';
-    ctx.fillText('HOW TO PLAY', CANVAS_W / 2, cy - 120);
+    // === Decorative dot borders ===
+    for (let i = 0; i < CANVAS_W; i += 8) {
+      const dotAlpha = 0.3 + 0.2 * Math.sin(t * 0.05 + i * 0.1);
+      ctx.globalAlpha = dotAlpha;
+      ctx.fillStyle = '#00FFFF';
+      ctx.fillRect(i + 3, 6, 2, 2);
+      ctx.fillRect(i + 3, CANVAS_H - 8, 2, 2);
+    }
+    ctx.globalAlpha = 1;
 
-    ctx.fillStyle = COLORS.text;
+    // === "HOW TO PLAY" title with glow ===
+    const glowIntensity = 0.5 + 0.5 * Math.sin(t * 0.04);
+    ctx.save();
+    ctx.shadowColor = '#00FFFF';
+    ctx.shadowBlur = 8 + glowIntensity * 8;
+    ctx.fillStyle = '#00FFFF';
+    ctx.font = '11px "Press Start 2P"';
+    ctx.fillText('HOW TO PLAY', cx, 36);
+    ctx.restore();
+
+    // === Gradient divider ===
+    const lineW = 140;
+    const lineGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    lineGrad.addColorStop(0, 'rgba(0,255,255,0)');
+    lineGrad.addColorStop(0.3, 'rgba(0,255,255,0.8)');
+    lineGrad.addColorStop(0.5, 'rgba(255,215,0,1)');
+    lineGrad.addColorStop(0.7, 'rgba(0,255,255,0.8)');
+    lineGrad.addColorStop(1, 'rgba(0,255,255,0)');
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(cx - lineW/2, 50, lineW, 2);
+
+    // === Instructions ===
+    ctx.fillStyle = '#FFFFFF';
     ctx.font = '6px "Press Start 2P"';
-    ctx.fillText('Eat all tokens to clear', CANVAS_W / 2, cy - 80);
-    ctx.fillText('each level.', CANVAS_W / 2, cy - 64);
+    ctx.fillText('Eat all tokens to clear', cx, 72);
+    ctx.fillText('each level.', cx, 88);
 
-    // Sparkle icon + label
-    Sprites.drawSparkle(ctx, CANVAS_W/2 - 80, cy - 32, 16, this.frame);
-    ctx.fillStyle = '#AAA';
-    ctx.font = '6px "Press Start 2P"';
+    // === AI Pills row ===
+    Sprites.drawSparkle(ctx, cx - 60, 118, 18, t);
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '7px "Press Start 2P"';
     ctx.textAlign = 'left';
-    ctx.fillText('AGI Power Pill', CANVAS_W/2 - 56, cy - 32);
+    ctx.fillText('AI Pills', cx - 36, 118);
 
-    // Ghost icon + label
+    // === Hallucination row ===
     ctx.textAlign = 'center';
-    Sprites.drawGhost(ctx, CANVAS_W/2 - 80, cy + 2, 14, COLORS.ghostPink, GHOST_MODE.CHASE, DIR.LEFT, this.frame);
+    Sprites.drawGhost(ctx, cx - 60, 152, 16, COLORS.ghostPink, GHOST_MODE.CHASE, DIR.LEFT, t);
+    ctx.fillStyle = '#FF69B4';
+    ctx.font = '7px "Press Start 2P"';
     ctx.textAlign = 'left';
-    ctx.fillText('Hallucination', CANVAS_W/2 - 56, cy + 2);
+    ctx.fillText('Hallucination', cx - 36, 152);
 
-    // Controls
+    // === Controls — two lines ===
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#666';
+    ctx.fillStyle = '#888';
     ctx.font = '5px "Press Start 2P"';
-    ctx.fillText('Swipe or Arrow Keys', CANVAS_W/2, cy + 50);
+    ctx.fillText('Mobile: Swipe', cx, 192);
+    ctx.fillText('Desktop: Arrow Keys', cx, 208);
 
-    // Play button
-    const pulse = 1 + 0.05 * Math.sin(this.frame * 0.08);
-    ctx.fillStyle = COLORS.textCyan;
-    ctx.font = `${Math.round(10 * pulse)}px "Press Start 2P"`;
-    ctx.fillText('TAP TO PLAY', CANVAS_W / 2, cy + 100);
+    // === Decorative divider before buttons ===
+    const divGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    divGrad.addColorStop(0, 'rgba(255,105,180,0)');
+    divGrad.addColorStop(0.5, 'rgba(255,105,180,0.5)');
+    divGrad.addColorStop(1, 'rgba(255,105,180,0)');
+    ctx.fillStyle = divGrad;
+    ctx.fillRect(cx - lineW/2, 232, lineW, 1);
 
-    // Skip to credits link
-    ctx.fillStyle = '#555';
-    ctx.font = '5px "Press Start 2P"';
-    ctx.fillText('skip to credits >', CANVAS_W / 2, CANVAS_H - 30);
+    // === Decorative sparkles ===
+    Sprites.drawSparkle(ctx, 20, 120, 10, t + 20);
+    Sprites.drawSparkle(ctx, CANVAS_W - 20, 120, 10, t + 50);
+    Sprites.drawSparkle(ctx, 30, 200, 8, t + 80);
+    Sprites.drawSparkle(ctx, CANVAS_W - 30, 200, 8, t + 110);
+
+    // === "TAP TO PLAY" button — cyan with glow ===
+    const pulse1 = 1 + 0.06 * Math.sin(t * 0.1);
+    ctx.save();
+    ctx.globalAlpha = 0.7 + 0.3 * Math.sin(t * 0.08);
+    ctx.shadowColor = '#00FFFF';
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = '#00FFFF';
+    ctx.font = `${Math.round(9 * pulse1)}px "Press Start 2P"`;
+    ctx.textAlign = 'center';
+    ctx.fillText('TAP TO PLAY', cx, 268);
+    ctx.restore();
+
+    // === "SKIP TO CREDITS" button — pink with glow ===
+    const pulse2 = 1 + 0.06 * Math.sin(t * 0.1 + 1.5);
+    ctx.save();
+    ctx.globalAlpha = 0.7 + 0.3 * Math.sin(t * 0.08 + 1.5);
+    ctx.shadowColor = '#FF69B4';
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = '#FF69B4';
+    ctx.font = `${Math.round(9 * pulse2)}px "Press Start 2P"`;
+    ctx.textAlign = 'center';
+    ctx.fillText('SKIP TO CREDITS', cx, 310);
+    ctx.restore();
+
+    // === Bottom decorative border ===
+    const bottomGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    bottomGrad.addColorStop(0, 'rgba(0,255,255,0)');
+    bottomGrad.addColorStop(0.5, 'rgba(0,255,255,0.4)');
+    bottomGrad.addColorStop(1, 'rgba(0,255,255,0)');
+    ctx.fillStyle = bottomGrad;
+    ctx.fillRect(cx - lineW/2, CANVAS_H - 14, lineW, 1);
+  }
+
+  renderLevelSplash() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+    const img = levelImages[this.level - 1];
+    if (img.complete && img.naturalWidth > 0) {
+      const imgAspect = img.naturalWidth / img.naturalHeight;
+      const canvasAspect = CANVAS_W / CANVAS_H;
+      let drawW, drawH;
+      if (imgAspect > canvasAspect) {
+        drawW = CANVAS_W * 0.85;
+        drawH = drawW / imgAspect;
+      } else {
+        drawH = CANVAS_H * 0.75;
+        drawW = drawH * imgAspect;
+      }
+      const drawX = (CANVAS_W - drawW) / 2;
+      const drawY = (CANVAS_H - drawH) / 2;
+
+      // Fade out in last 1 second (60 frames)
+      const fadeStart = 60;
+      if (this.levelSplashTimer < fadeStart) {
+        ctx.globalAlpha = this.levelSplashTimer / fadeStart;
+      }
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
+      ctx.globalAlpha = 1;
+    }
   }
 
   renderGameplay() {
     // Draw maze
-    drawMaze(ctx, this.maze, this.frame);
+    drawMaze(ctx, this.maze, this.frame, LEVEL_CONFIGS[this.level - 1].wallColor);
 
     // Draw bonus item
     if (this.bonusItem) {
@@ -1395,7 +1765,7 @@ class Game {
         ctx,
         this.bonusItem.x * TILE + TILE/2,
         this.bonusItem.y * TILE + TILE/2 + HUD_TOP,
-        TILE, '#333333' // Black sesame color
+        TILE, LEVEL_CONFIGS[this.level - 1].scoopColor
       );
     }
 
@@ -1573,14 +1943,16 @@ class Game {
   }
 
   renderCredits() {
+    const cx = CANVAS_W / 2;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
     const y = this.creditsScrollY;
 
+    // === HALLUCINATIONS section ===
     ctx.fillStyle = COLORS.text;
     ctx.font = '12px "Press Start 2P"';
-    ctx.fillText('HALLUCINATIONS', CANVAS_W / 2, y);
+    ctx.fillText('HALLUCINATIONS', cx, y);
 
     const ghostData = [
       { name: 'CONFAB', color: COLORS.ghostPink },
@@ -1591,10 +1963,10 @@ class Game {
 
     ghostData.forEach((g, i) => {
       const gy = y + 60 + i * 80;
-      Sprites.drawGhost(ctx, CANVAS_W / 2 - 60, gy, 24, g.color, GHOST_MODE.CHASE, DIR.RIGHT, this.frame);
+      Sprites.drawGhost(ctx, cx - 60, gy, 24, g.color, GHOST_MODE.CHASE, DIR.RIGHT, this.frame);
       ctx.fillStyle = g.color;
       ctx.font = '10px "Press Start 2P"';
-      ctx.fillText(g.name, CANVAS_W / 2 + 30, gy);
+      ctx.fillText(g.name, cx + 30, gy);
     });
 
     // Divider
@@ -1604,29 +1976,423 @@ class Game {
     // Made with Codex
     ctx.fillStyle = COLORS.textCyan;
     ctx.font = '8px "Press Start 2P"';
-    ctx.fillText('Made with Codex', CANVAS_W / 2, y + 460);
+    ctx.fillText('Made with Codex', cx, y + 460);
 
     // Nine Treasures Creamery
     ctx.fillStyle = COLORS.text;
     ctx.font = '7px "Press Start 2P"';
-    ctx.fillText('Nine Treasures Creamery', CANVAS_W / 2, y + 510);
-    ctx.fillText('x OpenAI', CANVAS_W / 2, y + 535);
+    ctx.fillText('Nine Treasures Creamery', cx, y + 510);
+    ctx.fillText('x AI-Pilled Asians', cx, y + 535);
+    ctx.fillText('in Tech', cx, y + 555);
+
+    // === SPONSORS section ===
+    // Divider
+    ctx.fillStyle = '#FFD700';
+    ctx.fillRect(80, y + 600, CANVAS_W - 160, 2);
+
+    // "SPONSORED BY" header
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '9px "Press Start 2P"';
+    ctx.fillText('SPONSORED BY', cx, y + 640);
+
+    // Sponsor logos in a grid (3 per row)
+    const logoSize = 60;
+    const logoPad = 18;
+    const cols = 3;
+    const gridW = cols * logoSize + (cols - 1) * logoPad;
+    const startX = cx - gridW / 2 + logoSize / 2;
+    const startY = y + 690;
+
+    sponsorImages.forEach((s, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const lx = startX + col * (logoSize + logoPad);
+      const ly = startY + row * (logoSize + logoPad + 10);
+
+      if (s.img.complete && s.img.naturalWidth > 0) {
+        // Scale image to fit within logoSize while maintaining aspect ratio
+        const imgAspect = s.img.naturalWidth / s.img.naturalHeight;
+        let drawW, drawH;
+        if (imgAspect > 1) {
+          drawW = logoSize;
+          drawH = logoSize / imgAspect;
+        } else {
+          drawH = logoSize;
+          drawW = logoSize * imgAspect;
+        }
+        ctx.drawImage(s.img, lx - drawW / 2, ly - drawH / 2, drawW, drawH);
+      }
+    });
+
+    // Total height of sponsor grid: 4 rows (11 logos, 3 per row = 4 rows)
+    const totalRows = Math.ceil(sponsorImages.length / cols);
+    const gridEndY = startY + totalRows * (logoSize + logoPad + 10);
+
+    // Final divider after sponsors
+    ctx.fillStyle = '#444';
+    ctx.fillRect(80, gridEndY + 20, CANVAS_W - 160, 2);
+
+    // Thank you text
+    ctx.fillStyle = '#E8D5C7';
+    ctx.font = '6px "Press Start 2P"';
+    ctx.fillText('Thank you to our', cx, gridEndY + 60);
+    ctx.fillText('amazing sponsors!', cx, gridEndY + 78);
   }
 
-  renderEnd() {
+  renderScoreScreen() {
+    const cx = CANVAS_W / 2;
+    const cy = CANVAS_H / 2;
+    const t = this.frame;
+
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    ctx.fillStyle = COLORS.text;
-    ctx.font = '20px "Press Start 2P"';
-    ctx.fillText('THE END', CANVAS_W / 2, CANVAS_H / 2 - 30);
+    // === Warm burgundy gradient background ===
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+    bgGrad.addColorStop(0, '#0a0003');
+    bgGrad.addColorStop(0.3, '#1a0508');
+    bgGrad.addColorStop(0.7, '#1a0508');
+    bgGrad.addColorStop(1, '#0a0003');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-    ctx.fillStyle = COLORS.textCyan;
-    ctx.font = '10px "Press Start 2P"';
-    const pulse = 0.5 + 0.5 * Math.sin(this.frame * 0.08);
-    ctx.globalAlpha = pulse;
-    ctx.fillText('PLAY AGAIN', CANVAS_W / 2, CANVAS_H / 2 + 40);
+    // === Subtle warm particles ===
+    for (let i = 0; i < 20; i++) {
+      const px = ((i * 173 + t * 0.15) % CANVAS_W);
+      const py = ((i * 113 + t * 0.08) % CANVAS_H);
+      const twinkle = 0.2 + 0.4 * Math.abs(Math.sin(t * 0.02 + i));
+      ctx.globalAlpha = twinkle;
+      ctx.fillStyle = (i % 3 === 0) ? '#A42325' : '#FFD700';
+      ctx.fillRect(Math.floor(px), Math.floor(py), 1, 1);
+    }
     ctx.globalAlpha = 1;
+
+    // === Decorative top border ===
+    for (let i = 0; i < CANVAS_W; i += 10) {
+      const glow = 0.25 + 0.15 * Math.sin(t * 0.04 + i * 0.12);
+      ctx.globalAlpha = glow;
+      ctx.fillStyle = '#A42325';
+      ctx.fillRect(i + 3, 5, 3, 3);
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(i + 4, 6, 1, 1);
+    }
+    ctx.globalAlpha = 1;
+
+    // === "YOUR SCORE" header ===
+    ctx.save();
+    ctx.shadowColor = '#A42325';
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = '#E8D5C7';
+    ctx.font = '10px "Press Start 2P"';
+    ctx.fillText('YOUR SCORE', cx, 40);
+    ctx.restore();
+
+    // === Score number — big and golden ===
+    const scorePulse = 1 + 0.03 * Math.sin(t * 0.06);
+    ctx.save();
+    ctx.shadowColor = '#A42325';
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = `${Math.round(24 * scorePulse)}px "Press Start 2P"`;
+    ctx.fillText('' + this.score, cx, 80);
+    ctx.restore();
+
+    // === Gold divider ===
+    const lineW = 140;
+    const divGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    divGrad.addColorStop(0, 'rgba(164,35,37,0)');
+    divGrad.addColorStop(0.3, 'rgba(255,215,0,0.6)');
+    divGrad.addColorStop(0.5, 'rgba(255,215,0,1)');
+    divGrad.addColorStop(0.7, 'rgba(255,215,0,0.6)');
+    divGrad.addColorStop(1, 'rgba(164,35,37,0)');
+    ctx.fillStyle = divGrad;
+    ctx.fillRect(cx - lineW/2, 104, lineW, 2);
+
+    // === Instagram CTA ===
+    ctx.fillStyle = '#E8D5C7';
+    ctx.font = '5px "Press Start 2P"';
+    ctx.fillText('Screenshot & post to', cx, 130);
+    ctx.fillText('Instagram Stories and tag', cx, 146);
+
+    ctx.save();
+    ctx.shadowColor = '#A42325';
+    ctx.shadowBlur = 6;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '6px "Press Start 2P"';
+    ctx.fillText('@ninetreasurescreamery', cx, 168);
+    ctx.restore();
+
+    // === Prize text ===
+    ctx.fillStyle = '#E8D5C7';
+    ctx.font = '5px "Press Start 2P"';
+    ctx.fillText('The highest score', cx, 200);
+    ctx.fillText('will win a pint of', cx, 216);
+
+    ctx.save();
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 4;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '6px "Press Start 2P"';
+    ctx.fillText('each flavor!', cx, 236);
+    ctx.restore();
+
+    // === Second divider ===
+    const div2Grad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    div2Grad.addColorStop(0, 'rgba(164,35,37,0)');
+    div2Grad.addColorStop(0.5, 'rgba(164,35,37,0.6)');
+    div2Grad.addColorStop(1, 'rgba(164,35,37,0)');
+    ctx.fillStyle = div2Grad;
+    ctx.fillRect(cx - lineW/2, 258, lineW, 1);
+
+    // === Small ice cream icons as decoration ===
+    const scoopColors = ['#D4A574', '#333333', '#C8A050', '#7CB342'];
+    scoopColors.forEach((c, i) => {
+      const ix = cx - 54 + i * 36;
+      const bob = Math.sin(t * 0.04 + i * 1.5) * 2;
+      Sprites.drawIceCream(ctx, ix, 278 + bob, 10, c);
+    });
+
+    // === "See Credits and Shout Outs" button ===
+    const btnY = 318;
+    const btnW = 260;
+    const btnH = 28;
+    const btnPulse = 0.7 + 0.3 * Math.sin(t * 0.07);
+
+    // Button background
+    ctx.save();
+    ctx.globalAlpha = btnPulse;
+    ctx.shadowColor = '#A42325';
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = '#A42325';
+    const btnR = 4;
+    ctx.beginPath();
+    ctx.moveTo(cx - btnW/2 + btnR, btnY - btnH/2);
+    ctx.lineTo(cx + btnW/2 - btnR, btnY - btnH/2);
+    ctx.quadraticCurveTo(cx + btnW/2, btnY - btnH/2, cx + btnW/2, btnY - btnH/2 + btnR);
+    ctx.lineTo(cx + btnW/2, btnY + btnH/2 - btnR);
+    ctx.quadraticCurveTo(cx + btnW/2, btnY + btnH/2, cx + btnW/2 - btnR, btnY + btnH/2);
+    ctx.lineTo(cx - btnW/2 + btnR, btnY + btnH/2);
+    ctx.quadraticCurveTo(cx - btnW/2, btnY + btnH/2, cx - btnW/2, btnY + btnH/2 - btnR);
+    ctx.lineTo(cx - btnW/2, btnY - btnH/2 + btnR);
+    ctx.quadraticCurveTo(cx - btnW/2, btnY - btnH/2, cx - btnW/2 + btnR, btnY - btnH/2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Button border
+    ctx.strokeStyle = '#FFD700';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - btnW/2 + btnR, btnY - btnH/2);
+    ctx.lineTo(cx + btnW/2 - btnR, btnY - btnH/2);
+    ctx.quadraticCurveTo(cx + btnW/2, btnY - btnH/2, cx + btnW/2, btnY - btnH/2 + btnR);
+    ctx.lineTo(cx + btnW/2, btnY + btnH/2 - btnR);
+    ctx.quadraticCurveTo(cx + btnW/2, btnY + btnH/2, cx + btnW/2 - btnR, btnY + btnH/2);
+    ctx.lineTo(cx - btnW/2 + btnR, btnY + btnH/2);
+    ctx.quadraticCurveTo(cx - btnW/2, btnY + btnH/2, cx - btnW/2, btnY + btnH/2 - btnR);
+    ctx.lineTo(cx - btnW/2, btnY - btnH/2 + btnR);
+    ctx.quadraticCurveTo(cx - btnW/2, btnY - btnH/2, cx - btnW/2 + btnR, btnY - btnH/2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Button text
+    ctx.fillStyle = '#E8D5C7';
+    ctx.font = '5px "Press Start 2P"';
+    ctx.fillText('See Credits and Shout Outs', cx, btnY);
+
+    // === Bottom decorative border ===
+    for (let i = 0; i < CANVAS_W; i += 10) {
+      const glow = 0.25 + 0.15 * Math.sin(t * 0.04 + i * 0.12 + 2);
+      ctx.globalAlpha = glow;
+      ctx.fillStyle = '#A42325';
+      ctx.fillRect(i + 3, CANVAS_H - 8, 3, 3);
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(i + 4, CANVAS_H - 7, 1, 1);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  renderEnd() {
+    const cx = CANVAS_W / 2;
+    const cy = CANVAS_H / 2;
+    const t = this.frame;
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // === Dark red/black gradient background ===
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+    bgGrad.addColorStop(0, '#1a0000');
+    bgGrad.addColorStop(0.5, '#330000');
+    bgGrad.addColorStop(1, '#1a0000');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+    // === Fireworks system ===
+    if (!this.fireworks) this.fireworks = [];
+
+    // Spawn new fireworks periodically
+    if (t % 25 === 0 || t % 37 === 0 || t % 53 === 0) {
+      const colors = ['#FF0000', '#FFD700', '#FF4500', '#FF69B4', '#00FFFF', '#FFE4B5', '#FFA500'];
+      this.fireworks.push({
+        x: 30 + Math.random() * (CANVAS_W - 60),
+        y: 30 + Math.random() * (CANVAS_H * 0.5),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        particles: Array.from({ length: 16 }, () => ({
+          angle: Math.random() * Math.PI * 2,
+          speed: 0.5 + Math.random() * 2,
+          decay: 0.015 + Math.random() * 0.02,
+        })),
+        life: 1.0,
+        age: 0,
+      });
+    }
+
+    // Update and draw fireworks
+    this.fireworks = this.fireworks.filter(fw => fw.life > 0);
+    for (const fw of this.fireworks) {
+      fw.age++;
+      fw.life -= 0.012;
+      for (const p of fw.particles) {
+        const dist = p.speed * fw.age * 0.7;
+        const px = fw.x + Math.cos(p.angle) * dist;
+        const py = fw.y + Math.sin(p.angle) * dist + fw.age * 0.15; // slight gravity
+        const size = Math.max(1, 3 * fw.life);
+        ctx.globalAlpha = fw.life * (0.7 + 0.3 * Math.sin(t * 0.2 + p.angle));
+        ctx.fillStyle = fw.color;
+        ctx.fillRect(px - size/2, py - size/2, size, size);
+        // Sparkle trail
+        if (fw.life > 0.4) {
+          ctx.globalAlpha = fw.life * 0.3;
+          ctx.fillRect(px - 1, py - 1, 2, 2);
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // === Decorative lantern dots along top and bottom ===
+    for (let i = 0; i < CANVAS_W; i += 12) {
+      const lanternGlow = 0.4 + 0.3 * Math.sin(t * 0.04 + i * 0.15);
+      ctx.globalAlpha = lanternGlow;
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(i + 4, 4, 4, 4);
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(i + 5, 5, 2, 2);
+      ctx.globalAlpha = lanternGlow * 0.7;
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(i + 4, CANVAS_H - 8, 4, 4);
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(i + 5, CANVAS_H - 7, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+
+    // === "HAPPY LUNAR NEW YEAR!" ===
+    const lnyGlow = 0.6 + 0.4 * Math.sin(t * 0.05);
+    ctx.save();
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 10 + lnyGlow * 6;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '8px "Press Start 2P"';
+    ctx.fillText('HAPPY LUNAR', cx, 34);
+    ctx.fillText('NEW YEAR!', cx, 52);
+    ctx.restore();
+
+    // === Gold decorative divider ===
+    const lineW = 140;
+    const divGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    divGrad.addColorStop(0, 'rgba(255,215,0,0)');
+    divGrad.addColorStop(0.3, 'rgba(255,0,0,0.8)');
+    divGrad.addColorStop(0.5, 'rgba(255,215,0,1)');
+    divGrad.addColorStop(0.7, 'rgba(255,0,0,0.8)');
+    divGrad.addColorStop(1, 'rgba(255,215,0,0)');
+    ctx.fillStyle = divGrad;
+    ctx.fillRect(cx - lineW/2, 66, lineW, 2);
+
+    // === Hanging lanterns (pixel art) ===
+    const drawLantern = (lx, ly, size, phase) => {
+      const sway = Math.sin(t * 0.03 + phase) * 2;
+      const lxs = lx + sway;
+      // String
+      ctx.strokeStyle = '#8B4513';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(lx, ly - size);
+      ctx.lineTo(lxs, ly);
+      ctx.stroke();
+      // Lantern body
+      const glow = 0.7 + 0.3 * Math.sin(t * 0.06 + phase);
+      ctx.globalAlpha = glow;
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(lxs - size/2, ly, size, size * 1.3);
+      // Gold trim
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(lxs - size/2 - 1, ly, size + 2, 2);
+      ctx.fillRect(lxs - size/2 - 1, ly + size * 1.3 - 2, size + 2, 2);
+      // Inner glow
+      ctx.fillStyle = '#FFA500';
+      ctx.fillRect(lxs - size/4, ly + 3, size/2, size * 1.3 - 6);
+      // Tassel
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(lxs - 1, ly + size * 1.3, 2, size * 0.5);
+      ctx.globalAlpha = 1;
+    };
+
+    drawLantern(40, 78, 12, 0);
+    drawLantern(CANVAS_W - 40, 78, 12, 2);
+    drawLantern(70, 85, 8, 1);
+    drawLantern(CANVAS_W - 70, 85, 8, 3);
+
+    // === "THE END" with red/gold glow ===
+    const endPulse = 0.5 + 0.5 * Math.sin(t * 0.04);
+    ctx.save();
+    ctx.shadowColor = '#FF0000';
+    ctx.shadowBlur = 12 + endPulse * 10;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = '20px "Press Start 2P"';
+    ctx.fillText('THE END', cx, cy + 10);
+    ctx.restore();
+
+    // Red outline text effect
+    ctx.save();
+    ctx.strokeStyle = '#FF0000';
+    ctx.lineWidth = 1;
+    ctx.font = '20px "Press Start 2P"';
+    ctx.strokeText('THE END', cx, cy + 10);
+    ctx.restore();
+
+    // === Pac-Man and ghosts parade ===
+    const paradeY = cy + 60;
+    const paradeOffset = (t * 0.8) % (CANVAS_W + 200);
+    const px = -100 + paradeOffset;
+    Sprites.drawPacman(ctx, px, paradeY, 14, DIR.RIGHT, 0.15 + 0.35 * Math.abs(Math.sin(t * 0.12)));
+    const ghostColors = [COLORS.ghostPink, COLORS.ghostPeach, COLORS.ghostMint, COLORS.ghostYellow];
+    ghostColors.forEach((c, i) => {
+      const gx = px - 22 - i * 20;
+      const bob = Math.sin(t * 0.08 + i) * 2;
+      Sprites.drawGhost(ctx, gx, paradeY + bob, 12, c, GHOST_MODE.FRIGHTENED, DIR.RIGHT, t + i * 10);
+    });
+
+    // === "PLAY AGAIN" button ===
+    const playPulse = 1 + 0.06 * Math.sin(t * 0.1);
+    const playAlpha = 0.6 + 0.4 * Math.sin(t * 0.08);
+    ctx.save();
+    ctx.globalAlpha = playAlpha;
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 6;
+    ctx.fillStyle = '#FFD700';
+    ctx.font = `${Math.round(10 * playPulse)}px "Press Start 2P"`;
+    ctx.fillText('PLAY AGAIN', cx, CANVAS_H - 40);
+    ctx.restore();
+
+    // === Bottom gold divider ===
+    const botGrad = ctx.createLinearGradient(cx - lineW/2, 0, cx + lineW/2, 0);
+    botGrad.addColorStop(0, 'rgba(255,215,0,0)');
+    botGrad.addColorStop(0.5, 'rgba(255,215,0,0.5)');
+    botGrad.addColorStop(1, 'rgba(255,215,0,0)');
+    ctx.fillStyle = botGrad;
+    ctx.fillRect(cx - lineW/2, CANVAS_H - 18, lineW, 1);
   }
 }
 
