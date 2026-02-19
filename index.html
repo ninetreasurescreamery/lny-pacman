@@ -134,9 +134,9 @@ const LEVEL_CONFIGS = [
     image: 'level1.png',
     scoopColor: '#D4A574',
     wallColor: '#1E90FF',
-    speedMultiplier: 0.50,
-    frightenedDuration: 420,
-    ghostDotLimits: [0, 0, 20, 40],
+    speedMultiplier: 0.55,
+    frightenedDuration: 360,
+    ghostDotLimits: [0, 0, 5, 15],
     maze: [
       '111111111111111111111',
       '132222222222222222231',
@@ -162,9 +162,9 @@ const LEVEL_CONFIGS = [
     image: 'level2.png',
     scoopColor: '#333333',
     wallColor: '#8B5CF6',
-    speedMultiplier: 0.60,
-    frightenedDuration: 360,
-    ghostDotLimits: [0, 0, 25, 50],
+    speedMultiplier: 0.70,
+    frightenedDuration: 270,
+    ghostDotLimits: [0, 0, 5, 12],
     maze: [
       '111111111111111111111',
       '132222222222222222231',
@@ -190,9 +190,9 @@ const LEVEL_CONFIGS = [
     image: 'level3.png',
     scoopColor: '#C8A050',
     wallColor: '#E67E22',
-    speedMultiplier: 0.70,
-    frightenedDuration: 300,
-    ghostDotLimits: [0, 0, 15, 35],
+    speedMultiplier: 0.85,
+    frightenedDuration: 180,
+    ghostDotLimits: [0, 0, 3, 8],
     maze: [
       '111111111111111111111',
       '132221222222222122231',
@@ -218,9 +218,9 @@ const LEVEL_CONFIGS = [
     image: 'level4.png',
     scoopColor: '#7CB342',
     wallColor: '#27AE60',
-    speedMultiplier: 0.80,
-    frightenedDuration: 240,
-    ghostDotLimits: [0, 0, 10, 25],
+    speedMultiplier: 1.00,
+    frightenedDuration: 120,
+    ghostDotLimits: [0, 0, 2, 5],
     maze: [
       '111111111111111111111',
       '132121222222222121231',
@@ -1293,15 +1293,17 @@ class Game {
   updatePlaying() {
     // Update mode timer (scatter/chase waves)
     this.modeTimer++;
+    const scatterBase = Math.max(120, 420 - (this.level - 1) * 100);
+    const scatterLate = Math.max(60, 300 - (this.level - 1) * 80);
     const waves = [
-      { mode: GHOST_MODE.SCATTER, duration: 420 },  // 7s
-      { mode: GHOST_MODE.CHASE, duration: 1200 },    // 20s
-      { mode: GHOST_MODE.SCATTER, duration: 420 },
+      { mode: GHOST_MODE.SCATTER, duration: scatterBase },
       { mode: GHOST_MODE.CHASE, duration: 1200 },
-      { mode: GHOST_MODE.SCATTER, duration: 300 },   // 5s
+      { mode: GHOST_MODE.SCATTER, duration: scatterBase },
       { mode: GHOST_MODE.CHASE, duration: 1200 },
-      { mode: GHOST_MODE.SCATTER, duration: 300 },
-      { mode: GHOST_MODE.CHASE, duration: 99999 },   // permanent
+      { mode: GHOST_MODE.SCATTER, duration: scatterLate },
+      { mode: GHOST_MODE.CHASE, duration: 1200 },
+      { mode: GHOST_MODE.SCATTER, duration: scatterLate },
+      { mode: GHOST_MODE.CHASE, duration: 99999 },
     ];
     if (this.modeWave < waves.length && this.modeTimer >= waves[this.modeWave].duration) {
       this.modeTimer = 0;
